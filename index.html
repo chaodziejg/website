@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>buy me</title>
+  <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+
+  <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #flashContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+<p>buy me!</p>
+<p id=price>price: 0.0 btc</p>
+<p>click the button below to continue</p>
+
+ <div id="flashContainer"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        let flashing = false;
+
+        function generateRandomBTCPrice() {
+            const minPrice = 0.0;
+            const maxPrice = 2.0;
+            const randomPrice = Math.random() * (maxPrice - minPrice) + minPrice;
+            return randomPrice.toFixed(2);
+        }
+
+        function generateRandomUSDPrice() {
+            const chanceToShowRealPrice = 0.06;
+            if (Math.random() < chanceToShowRealPrice) {
+                const minUSDPrice = 0.0;
+                const maxUSDPrice = 20000.0;
+                const randomUSDPrice = Math.random() * (maxUSDPrice - minUSDPrice) + minUSDPrice;
+                return `$${randomUSDPrice.toFixed(2)}`;
+            } else {
+                return 'Could not fetch';
+            }
+        }
+    
+
+        const btcPrice = generateRandomBTCPrice();
+        const usdPrice = generateRandomUSDPrice();
+        document.getElementById('price').textContent = `price: ${btcPrice} btc`;
+        document.getElementById('priceButton').textContent = `buy for ${btcPrice} btc`;
+        function updatePrice() {
+            const usdMessage = usdPrice === 'Could not fetch' ? '0 usd because could not fetch' : usdPrice;
+            const message = `you bought me and you won ${usdMessage}`;
+            alert(message);
+
+            // Flash the screen after the alert box is closed, only if USD price is above 0
+            if (usdPrice !== 'Could not fetch' && parseFloat(usdPrice.slice(1)) > 0) {
+                flashScreen();
+            }
+        }
+
+         function createRandomText() {
+            const texts = [
+                "virus",
+                "what have you done",
+                "usd price is above 0 which is not vaild",
+                "you have has got has has a cum virus",
+                "lol",
+                "you are",
+            ];
+
+            return texts[Math.floor(Math.random() * texts.length)];
+        }
+
+       function flashScreen(usdPrice) {
+            const flashContainer = document.getElementById('flashContainer');
+            flashContainer.style.display = 'block';
+
+            const numFlashingText = Math.floor(Math.random() * 10) + 1;
+    
+            const randomText = createRandomText();
+            let randomX = Math.floor(Math.random() * 80);
+            let randomY = Math.floor(Math.random() * 80);
+            const randomPositionStyle = `position: absolute; top: ${randomY}%; left: ${randomX}%; color: black; font-size: 24px;`;
+            const randomTextNode = document.createElement('p');
+            randomTextNode.textContent = randomText;
+            randomTextNode.style = randomPositionStyle;
+            flashContainer.appendChild(randomTextNode);
+
+            let count = 0;
+            const interval = setInterval(() => {
+            flashContainer.style.backgroundColor = getRandomColor();
+            randomTextNode.style.color = getRandomColor();
+        
+            randomX = Math.floor(Math.random() * 80);
+            randomY = Math.floor(Math.random() * 80);
+            randomTextNode.style.left = `${randomX}%`;
+            randomTextNode.style.top = `${randomY}%`;
+            count++;
+            if (count >= 100) {
+                clearInterval(interval);
+                flashContainer.style.display = 'none';
+                exitWebsite();
+            }
+        }, 50);
+    }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function exitWebsite() {
+            window.location.href = 'about:blank';
+        }
+
+        document.getElementById('priceButton').addEventListener('click', updatePrice);
+        });
+    </script>
+
+<button id="priceButton" type="button" >buy for 0 btc</button>
+ 
+</body>
+</html>

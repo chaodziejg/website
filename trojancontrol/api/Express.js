@@ -1,9 +1,6 @@
 const express = require('express');
-const cors = require('cors'); // Import the cors package
 const app = express();
-const port = 80; // Port number can be any available port
-
-app.use(cors());
+const port = 3000; // Port number can be any available port
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

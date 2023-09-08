@@ -19,6 +19,15 @@
         document.getElementById("messagesList").appendChild(li);
     });
 
+    connection.start()
+    .then(() => {
+        // Connection established
+    })
+    .catch((error) => {
+        console.error('SignalR connection error:', error);
+        // Handle the error gracefully (e.g., display an error message to the user)
+    });
+
     //document.getElementById("sendButton").addEventListener("click", () => {
     //    const message = document.getElementById("messageInput").value;
     //    connection.invoke("SendMessage", message).catch(err => console.error(err));

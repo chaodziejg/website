@@ -1,7 +1,25 @@
-const express = require('express');
-const app = express();
-const port = 3000; // Port number can be any available port
+<!-- Include SignalR JavaScript library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/2.2.2/signalr.min.js"></script>
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/appHub")
+        .build();
+
+    connection.on("ReceiveMessage", (message) => {
+        const li = document.createElement("li");
+        li.textContent = message;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    document.getElementById("sendButton").addEventListener("click", () => {
+        const message = document.getElementById("messageInput").value;
+        connection.invoke("SendMessage", message).catch(err => console.error(err));
+    });
+
+    document.getElementById("closeButton").addEventListener("click", () => {
+        connection.invoke("CloseApplication").catch(err => console.error(err));
+    });
+
+    connection.start().catch(err => console.error(err));
+</script>
